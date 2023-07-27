@@ -1,0 +1,10 @@
+# Constants
+SENT_TYPE = "de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence"
+MATSCI_SENT_TYPE = "webanno.custom.MatSci_Sentence"
+TOKEN_TYPE = "de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token"
+SKIPPING_TYPE = "webanno.custom.MatSci_Skipping"
+ENTITY_TYPE = "webanno.custom.MatSci_Entity"
+RELATION_TYPE = "webanno.custom.MatSci_Relations"
+PASSAGE_TYPE = "webanno.custom.MatSci_Passage"
+DOCUMENT_METADATA_TYPE = "de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData"
+NAMED_ENTITY_TYPE = "webanno.custom.NamedEntityMention"
