@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "puima"
+version = "1.0.0"
+authors = [
+  { name="Annemarie Friedrich", email="tbd@tbd.de" },
+  { name="Timo Schrader", email="tbd@tbd.de"}
+]
+description = "A lightweight Python-framework for processing the text part of UIMA CAS structures."
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache 2.0",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  "lxml"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/annefried/puima"
+"Bug Tracker" = "https://github.com/annefried/puima/issues"
