@@ -14,14 +14,16 @@ from zipfile import ZipFile, is_zipfile
 import os, shutil, sys
 from puima.fix_xmi import fix_typenames_etc
 
-def unzip_archive(top_path, in_path, out_path, annotator_of_interest, curation):
+def unzip_archive(top_path, in_path, zip_name, out_path, annotator_of_interest, curation):
     """
+    :param top_path: top-level path
     :param in_path: path to zip archive (INCEpTION export)
+    :param zip_name: filename of the zip archive
     :param out_path: where to write the unzipped files
     :param annotator_of_interest: only the annotations of this annotator are kept!
     :return:
     """
-    in_path = os.path.join(top_path, in_path)
+    in_path = os.path.join(top_path, in_path, zip_name)
     out_path = os.path.join(top_path, out_path)
     xmi_out_path = os.path.join(top_path, "temp_xmi_docs")  # path where to write the relevant XMI files
 
@@ -33,10 +35,11 @@ def unzip_archive(top_path, in_path, out_path, annotator_of_interest, curation):
 
     # unzip first level
     with ZipFile(in_path, 'r') as zf:
-        # zf.printdir()
         print('Extracting all the files now...')
         zf.extractall(out_path)
         print('Done!')
+
+    out_path = os.path.join(out_path, zip_name[:-4])
 
     annotations_folder = "annotation"
     if curation == "true":
@@ -92,5 +95,4 @@ if __name__ == '__main__':
 
     # Further example usage:
     # This script puts the unzipped file into "extracted_file"
-    # unzip_archive(os.path.join("../data", "project-name"), "export.zip",
-    #              "extracted_file", "nt_user")
+    # unzip_archive(top_path="", in_path="data", zip_name="sample_project.zip", out_path="data/output", annotator_of_interest="annotator.id", curation=False)
