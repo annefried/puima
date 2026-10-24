@@ -1,6 +1,3 @@
-import sys
-sys.path.append('../')
-
 """
 Puima: a lightweight Python-framework to process the text part of UIMA CAS structures.
 
@@ -15,13 +12,16 @@ __version__ = "1.0"
 
 from zipfile import ZipFile, is_zipfile
 import os, shutil, sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from puima.fix_xmi import fix_typenames_etc
 
 def unzip_archive(top_path, in_path, out_path, annotator_of_interest, curation):
     """
+    :param top_path: path where the folder containing the zip file is located
     :param in_path: path to zip archive (INCEpTION export)
-    :param out_path: where to write the unzipped files
+    :param out_path: where to write the unzipped files (full INCEpTION export structure)
     :param annotator_of_interest: only the annotations of this annotator are kept!
+    :param curation: whether to extract from the curation folder (default: false, i.e. extract from annotation folder)
     :return:
     """
     in_path = os.path.join(top_path, in_path)
@@ -77,23 +77,26 @@ if __name__ == '__main__':
     # Usage: 
     base_path = sys.argv[1]  # the base folder where we are operating, INCEpTION export as zip should be in this folder
     source_path = sys.argv[2] # Zip file is the export as UIMA XMI 1.1 from Inception
-    target_path = sys.argv[3] # path for extracted zip files
+    zip_out_path = sys.argv[3] # path for extracted zip files
     userid = sys.argv[4]  # the Inception userid of the user whose annotations are to be extracted as XMI documents
-    final_target_path = sys.argv[5]  # folder with XMI documents with fixed document name attributes in XMI
+    xmi_out_path = sys.argv[5]  # folder with XMI documents with fixed document name attributes in XMI
     curation = sys.argv[6]
     if curation not in ["true", "false"]:
         print("curation needs to be true or false, if false: extrating from annotations folder.")
-    unzip_archive(base_path, source_path, target_path, userid, curation)
-    if os.path.exists(os.path.join(base_path, final_target_path)):
-        shutil.rmtree(os.path.join(base_path, final_target_path))
+    unzip_archive(base_path, source_path, zip_out_path, userid, curation)
+    if os.path.exists(os.path.join(base_path, xmi_out_path)):
+        shutil.rmtree(os.path.join(base_path, xmi_out_path))
     
-    os.makedirs(os.path.join(base_path, final_target_path))
-    fix_typenames_etc(os.path.join(base_path, "temp_xmi_docs"), os.path.join(base_path, final_target_path))
+    os.makedirs(os.path.join(base_path, xmi_out_path))
+    fix_typenames_etc(os.path.join(base_path, "temp_xmi_docs"), os.path.join(base_path, xmi_out_path))
 
     if os.path.exists(os.path.join(base_path, "temp_xmi_docs")):
         shutil.rmtree(os.path.join(base_path, "temp_xmi_docs"))
 
     # Further example usage:
-    # This script puts the unzipped file into "extracted_file"
+    # This script puts the unzipped, fixed xmi files and typesystem into "extracted_file"
     # unzip_archive(os.path.join("../data", "project-name"), "export.zip",
-    #              "extracted_file", "nt_user")
+    #              "extracted_file", "nt_user", "false")
+
+    # Command line use: python inception_zip_file_util.py "base dir containing export.zip" 
+    # "export.zip" "zip out path" "annotator_name" "target dir" "curation true/false"
